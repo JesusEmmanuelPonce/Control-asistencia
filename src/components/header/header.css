@@ -1,0 +1,6 @@
+.container-header-pb{
+    height: 5em;
+    background: rgb(159,158,158);
+    background: linear-gradient(90deg, rgba(159,158,158,1) 0%, rgba(237,237,237,1) 100%);
+    border-bottom: 1.5px solid rgba(159,158,158,.5);
+}
