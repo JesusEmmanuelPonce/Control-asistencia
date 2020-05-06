@@ -28,7 +28,7 @@ const FormAssistance = () => {
                 >
 
                 <Tooltip title="Escriba su ID para asistencia">
-                    <Button type="default" shape="circle" className="btn-pb" size="small" icon={<QuestionOutlined />} />
+                    <Button type="default" shape="circle" className="btn-pb" size="middle" icon={<QuestionOutlined />} />
                 </Tooltip>
 
                 <Form.Item
@@ -42,8 +42,8 @@ const FormAssistance = () => {
                 </Form.Item>
 
                 <Form.Item {...tailLayout}>
-                    <Button type="default" htmlType="submit">
-                         Submit
+                    <Button type="default" className="btn-success-pb" htmlType="submit">
+                        Registrar
                     </Button>
                 </Form.Item>
             </Form>
