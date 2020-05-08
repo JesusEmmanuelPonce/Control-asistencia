@@ -20,20 +20,14 @@ const FormAssistance = ({history}) => {
         
         setError(false)
         
-        await axios.post('https://assistances-back.herokuapp.com/api/entry', id)
-            .then(res => {
-                if(res.data.code === 11000){
-                    console.log('Error')
-                }
-                else{
-                    Swal.fire(
-                        'Asistencia agregada',
-                        '',
-                        'success'
-                      )
-                }
-                history.push('/')
-            })
+        await axios.post('https://assistances-back.herokuapp.com/api/entry', {
+            id
+        },
+            Swal.fire(
+            'Asistencia agregada',
+            '',
+            'success'
+            ))
     }
 
     return(
