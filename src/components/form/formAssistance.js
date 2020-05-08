@@ -1,54 +1,55 @@
-import React from 'react';
+import React, {useState} from 'react';
+import { withRouter } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import './formAssistance.css';
-import { Form, Input, Button, Tooltip } from 'antd';
-import { QuestionOutlined } from '@ant-design/icons';
+import axios from 'axios';
 
-  const tailLayout = {
-    wrapperCol: { offset: 2}
-  };
+const FormAssistance = ({history}) => {
 
-const FormAssistance = () => {
-    
-    const onFinish = values => {
-        console.log('Success:', values);
-      };
-    
-      const onFinishFailed = errorInfo => {
-        console.log('Failed:', errorInfo);
-      };
+    const [error, setError] = useState(false);
+    const [id, setId] = useState('');
+
+    const assistanceSumit = async e => {
+        e.preventDefault()
+
+        if(!id){
+            setError(true);
+            Swal.fire('Escriba su ID')
+            return;
+        }
+        
+        setError(false)
+        
+        await axios.post('https://assistances-back.herokuapp.com/api/entry', id)
+            .then(res => {
+                if(res.data.code === 11000){
+                    console.log('Error')
+                }
+                else{
+                    Swal.fire(
+                        'Asistencia agregada',
+                        '',
+                        'success'
+                      )
+                }
+                history.push('/')
+            })
+    }
 
     return(
        <div className="container-form-pb">
-            <Form
-                className="form-pb"
-                name="basic"
-                initialValues={{ remember: true }}
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-                >
-
-                <Tooltip title="Escriba su ID para asistencia">
-                    <Button type="default" shape="circle" className="btn-pb" size="middle" icon={<QuestionOutlined />} />
-                </Tooltip>
-
-                <Form.Item
+            <form onSubmit={assistanceSumit}>
+                <input
                     name="id"
-                    rules={[{ required: true, message: 'Introduzca su ID' }]}
-                >
-                    <Input
-                        className="form-item-pb"
-                        placeholder="ID"
-                    />
-                </Form.Item>
-
-                <Form.Item {...tailLayout}>
-                    <Button type="default" className="btn-success-pb" htmlType="submit">
-                        Registrar
-                    </Button>
-                </Form.Item>
-            </Form>
+                    className="form-item-pb"
+                    placeholder="ID"
+                    type="text"
+                    onChange={e=> setId(e.target.value)}
+                />
+                <input className="btn-success-pb" type="submit" value="Registrar"/>   
+            </form>
        </div>
     )
 }
 
-export default FormAssistance;
+export default withRouter(FormAssistance);
