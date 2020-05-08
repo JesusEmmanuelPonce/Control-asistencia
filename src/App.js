@@ -1,18 +1,14 @@
 import React from 'react';
-import './App.css';
-import 'antd/dist/antd.css';
-import Header from './components/header/header';
-import Clock from './components/clock/Clock';
-import FormAssistance from './components/form/formAssistance';
-
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import Main from './Main';
 
 function App() {
   return (
-    <div className="App">
-      <Header/>
-        <Clock/>
-      <FormAssistance/>
-    </div>
+    <>
+      <Router>
+        <Route exact path="/" component={Main}/>
+      </Router>
+    </>
   );
 }
 
