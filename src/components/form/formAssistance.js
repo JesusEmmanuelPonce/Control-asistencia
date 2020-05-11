@@ -1,13 +1,21 @@
-import React, {useState} from 'react';
-import { withRouter } from 'react-router-dom';
+import React, {useState,useEffect} from 'react';
 import Swal from 'sweetalert2';
 import './formAssistance.css';
 import axios from 'axios';
 
-const FormAssistance = ({history}) => {
+const FormAssistances = () => {
 
     const [error, setError] = useState(false);
-    const [id, setId] = useState('');
+    const [teacher, setTeacher] = useState('');
+    const [jsonTeacher, setJsonTeacher] = useState([])
+
+    useEffect(() => {
+        const getTeacher = async() => {
+            const resultado = await axios.get('http://localhost:3001/teachers');
+            setJsonTeacher(resultado.data)
+        }
+        getTeacher()
+    }, [])
 
     const assistanceSumit = async e => {
         e.preventDefault()
@@ -33,20 +41,20 @@ const FormAssistance = ({history}) => {
 
         const hour = `${h}:${m}:${s}`;
 
-        if(!id){
+        if(!teacher){
             setError(true);
-            Swal.fire('Escriba su ID')
+            Swal.fire('Selecione su nombre')
             return;
         }
         
         setError(false)
         
-        await axios.post('https://assistances-back.herokuapp.com/api/entry', {
+        await axios.post('http://localhost:3001/entries', {
+            teacher,
             day,
 			month,
 			year,
-			hour,
-            id
+			hour
         },
             Swal.fire(
             'Asistencia agregada',
@@ -58,17 +66,17 @@ const FormAssistance = ({history}) => {
     return(
        <div className="container-form-pb">
             <form onSubmit={assistanceSumit}>
-                <input
-                    name="id"
-                    className="form-item-pb"
-                    placeholder="ID"
-                    type="text"
-                    onChange={e=> setId(e.target.value)}
-                />
+                <select onChange={e=>setTeacher(e.currentTarget.value)} className="form-item-pb">
+                    <option value="">Elija su nombre</option>
+                    {
+                        jsonTeacher.map(item=>(
+                        <option key={item._id} value={item._id}>{item.names}</option>
+                    ))}
+                </select>
                 <input className="btn-success-pb" type="submit" value="Registrar"/>   
             </form>
        </div>
     )
 }
 
-export default withRouter(FormAssistance);
+export default FormAssistances;
