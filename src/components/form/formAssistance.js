@@ -11,7 +11,7 @@ const FormAssistances = () => {
 
     useEffect(() => {
         const getTeacher = async() => {
-            const resultado = await axios.get('http://localhost:3001/teachers');
+            const resultado = await axios.get('https://assistances.herokuapp.com/teachers');
             setJsonTeacher(resultado.data)
         }
         getTeacher()
@@ -49,7 +49,7 @@ const FormAssistances = () => {
         
         setError(false)
         
-        await axios.post('http://localhost:3001/entries', {
+        await axios.post('https://assistances.herokuapp.com/entries', {
             teacher,
             day,
 			month,
